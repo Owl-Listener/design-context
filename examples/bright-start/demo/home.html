@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bright Start — you finished it</title>
+<style>
+  /* Built against design-context/ 2026-08-09, after the conflict in DRY-RUN.md was resolved.
+
+     Constraints applied:
+       no celebration animation, sound, or badge (decision 2026-07-30, settled)
+       completion is a static full page illustration    (decision 2026-08-09, provisional)
+       no score, level, or progress bar in the child's view (decision 2026-06-20, settled)
+
+     Mood applied: exuberant, saturated colour, big friendly shapes.
+     Mood NOT applied: Rewarding and Kinetic, both overridden by the 2026-07-30
+     decision and read as historical intent per the 2026-08-09 entry.
+
+     There is no animation anywhere in this file, including on load. That is
+     deliberate: the research objected to motion at the completion moment, so
+     colour and scale carry the celebration instead. */
+
+  :root {
+    --paper: #FFF6E2;   /* warm cream, never white */
+    --sun:   #FFC93C;
+    --sky:   #3B8FD1;
+    --berry: #E4572E;
+    --leaf:  #4C9A5A;
+    --ink:   #241C14;   /* every piece of text is ink on colour, for contrast */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--sun);   /* full bleed: the page IS the acknowledgement */
+    color: var(--ink);
+    font-family: 'Trebuchet MS', 'Verdana', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+  }
+
+  .page { width: 100%; max-width: 520px; text-align: center; }
+
+  /* Big friendly shapes, from the mood's playground reference.
+     Decorative only, so hidden from assistive technology. */
+  .scene {
+    position: relative;
+    height: 220px;
+    margin-bottom: 40px;
+  }
+
+  .hill {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 420px;
+    height: 210px;
+    margin-left: -210px;
+    background: var(--leaf);
+    border-radius: 210px 210px 0 0;
+  }
+
+  .book {
+    position: absolute;
+    left: 50%;
+    bottom: 46px;
+    width: 150px;
+    height: 104px;
+    margin-left: -75px;
+    background: var(--berry);
+    border-radius: 10px;
+  }
+
+  /* The closed book, one flat shape with a spine. Nothing opens, nothing turns. */
+  .book::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    margin-left: -4px;
+    background: var(--paper);
+  }
+
+  .cloud {
+    position: absolute;
+    background: var(--sky);
+    border-radius: 999px;
+  }
+  .cloud.a { width: 96px; height: 44px; top: 18px;  left: 8px; }
+  .cloud.b { width: 64px; height: 32px; top: 52px;  right: 18px; }
+
+  h1 {
+    font-size: 2.1rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+  }
+
+  /* One line of warm copy. Not a score, not a count, not a rank.
+     Naming the book is the whole reward. */
+  p.said {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 34ch;
+    margin: 0 auto 40px;
+  }
+
+  .onward {
+    display: inline-block;
+    background: var(--paper);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 14px 30px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  /* No hover transform, no bounce. A visible focus ring, because a five year
+     old on a keyboard or a switch device needs to see where they are. */
+  .onward:focus-visible {
+    outline: 4px solid var(--sky);
+    outline-offset: 3px;
+  }
+
+  footer {
+    margin-top: 36px;
+    font-size: 0.85rem;
+    /* Parent-facing only. Progress lives behind this, never on the child's screen. */
+  }
+  footer a { color: var(--ink); }
+</style>
+</head>
+<body>
+  <main class="page">
+    <div class="scene" aria-hidden="true">
+      <div class="cloud a"></div>
+      <div class="cloud b"></div>
+      <div class="hill"></div>
+      <div class="book"></div>
+    </div>
+
+    <h1>You finished The Snail and the Whale.</h1>
+
+    <p class="said">That one has a very long journey in it. You read the whole thing.</p>
+
+    <a class="onward" href="#library">Find the next book</a>
+
+    <footer>
+      <a href="#parent">Grown-up corner</a>
+    </footer>
+  </main>
+</body>
+</html>
