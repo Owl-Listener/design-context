@@ -1,10 +1,10 @@
 # design-context
 
-> Agents forget. Your design intent shouldn't.
+> How to start a session where an agent is going to design something.
 
-Every session with a coding agent starts from zero. You explain the mood again. You correct the same rounded corners again. You watch it reach for the same corporate blue you rejected three sessions ago. Engineers solved this for themselves with CLAUDE.md and cursor rules. Designers have no equivalent.
+Before an agent generates a single component, page, or flow, it needs more than a design system to work from. A design system tells it what a button looks like but it doesn't tell it the mood you're going for, the vocabulary you'd use to describe the interface, the voice the copy should have, or the decisions you've already made that you don't want relitigated. That gap is easy to ignore when everything is a static screen in a deterministic system, and impossible to ignore once UI starts being hydrated or assembled on the fly, where there's no fixed layout for the agent to copy and it's making real interface judgment calls in the moment.
 
-design-context is the equivalent. One directory, `design-context/`, that holds your project's design intent in files any agent can read: the mood, the shared vocabulary, the voice, the token intent, and, crucially, the running log of what you've already decided. It loads at session start. It updates as you critique. Git can diff your taste, and your agent stops forgetting it.
+design-context is that setup, done once, before the session starts. One directory, design-context/, that holds your project's design intent in files any agent can read: the mood, the shared vocabulary, the voice, the token intent, and, crucially, the running log of what you've already decided. It loads at session start, before the agent generates anything. It updates as you critique. Git can diff your taste, and your agent stops starting from zero.
 
 ---
 
