@@ -60,7 +60,7 @@ An append-only log, newest entries at the top. Each entry:
 Rules:
 
 - `Status` is `settled`, `provisional`, or `superseded`. Agents treat `settled` as binding, `provisional` as a strong default worth confirming before large investments, `superseded` as historical context only.
-- Entries are never edited or deleted. A reversal is a new entry whose `Supersedes` field names the old one, and the old entry's status flips to `superseded`. The history of changed minds is part of the record: it tells an agent (and a new team member) where the project's judgement has been tender.
+- Entries are never edited or deleted, with a single exception: when an entry is reversed, its `Status` field flips to `superseded`. That flip is the only permitted modification to an existing entry, and the entry's text is left untouched. A reversal is a new entry whose `Supersedes` field names the old one. The history of changed minds is part of the record: it tells an agent (and a new team member) where the project's judgement has been tender.
 - `Because` is required. A decision without a reason can't be applied to a case the decision didn't anticipate, and generalising to unanticipated cases is most of what we need agents to do well.
 
 ## 4. Agent behaviour

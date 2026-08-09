@@ -54,6 +54,15 @@ Two skills ship with this repo (`skills/`):
 
 Both are plain SKILL.md files. Claude Code, Gemini CLI, Cursor, anywhere the skills format works.
 
+## The examples
+
+Two worked examples live in `examples/`, each with a filled `design-context/`, a screen built from it, and a dry run reporting what held.
+
+- **calm-ledger** — a personal finance app whose mood and decisions agree everywhere. The run tests whether a Because field generalises to cases the decision never explicitly mentioned.
+- **bright-start** — a children's reading app whose mood and decisions genuinely conflict, because a usability round overturned the kickoff mood six weeks after it was written. The run tests whether an agent flags that conflict or resolves it silently.
+
+The dry runs are the useful part. Both end with findings that became new entries in the example's own `decisions.md`, which is the loop this repo is arguing for.
+
 ## Relationship to the family
 
 [perceptual-protocols](https://github.com/Owl-Listener/perceptual-protocols) defines the perceptual formats: mood, vocab, trace, and the planned critique and taste. design-context is the harness that carries them across sessions. If SKILL.md is the protocol for craft and the perceptual protocols are the format for intent, design-context is the memory that makes both persistent.

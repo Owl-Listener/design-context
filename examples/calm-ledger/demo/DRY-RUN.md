@@ -19,3 +19,5 @@ One agent session, playing by the rules: load `design-context/index.md`, follow 
 3. **Positive money colour was a judgement call.** The decisions constrain negative amounts; nothing constrains positive ones. The agent used a quiet sage. Defensible from the mood, but it's exactly the kind of silent judgement that should become a `provisional` entry via update-design-context.
 
 Findings 2 and 3 are the system working as intended: the run didn't just pass, it generated the next two candidate entries for `decisions.md`.
+
+**Recorded 2026-08-09.** Findings 2 and 3 are now entries in `decisions.md`, both `provisional`: the minus glyph, and the sage for positive amounts. Finding 1 is answered by the `bright-start` example, which sets mood and decisions in deliberate conflict.
