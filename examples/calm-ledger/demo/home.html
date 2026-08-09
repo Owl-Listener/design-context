@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calm Ledger</title>
+<style>
+  /* Built against design-context/ 2026-08-09.
+     Constraints applied: red for errors only (decision 2026-08-09),
+     no celebration mechanics (decision 2026-08-04),
+     8px corners, provisional (decision 2026-08-01).
+     Mood: steady, legible warmth, unhurried density. Motion: slow fades only. */
+
+  :root {
+    --paper: #F7F3EA;        /* warm paper, not white */
+    --card: #FDFBF5;
+    --ink: #33302A;          /* ink, not black */
+    --ink-soft: #6B665C;
+    --line: #E6DFD2;
+    --accent: #7A8B6F;       /* sage; quiet, not celebratory */
+    --radius: 8px;           /* provisional decision 2026-08-01 */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;                 /* generous, paperback-page */
+    display: flex;
+    justify-content: center;
+    padding: 48px 24px;
+    animation: settle 1.2s ease-out;  /* one slow fade, nothing else moves */
+  }
+
+  @keyframes settle { from { opacity: 0; } to { opacity: 1; } }
+
+  .screen { width: 100%; max-width: 420px; }
+
+  header { margin-bottom: 40px; }
+  header h1 {
+    font-size: 1.05rem;
+    font-weight: normal;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  .balance {
+    margin-bottom: 48px;              /* white space is the trust signal */
+  }
+  .balance .label {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .balance .amount {
+    font-size: 2.4rem;
+    font-weight: normal;
+  }
+
+  .note {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    margin-bottom: 48px;
+  }
+  /* Decision 2026-08-04: goal reached = one quiet line. No animation, no badge. */
+
+  section h2 {
+    font-size: 0.85rem;
+    font-weight: normal;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .ledger {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+  .row:last-child { border-bottom: none; }
+  .row .what { color: var(--ink); }
+  .row .when { font-size: 0.8rem; color: var(--ink-soft); margin-left: 8px; }
+  .row .amount { font-variant-numeric: tabular-nums; }
+
+  /* Decision 2026-08-09: negative money is ink + glyph, never red.
+     The glyph is a small outgoing mark before the amount. */
+  .amount.out::before { content: "\2212\00a0"; color: var(--ink-soft); }
+  .amount.in { color: var(--accent); }
+
+  footer {
+    margin-top: 48px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="screen">
+    <header>
+      <h1>Calm Ledger</h1>
+    </header>
+
+    <div class="balance">
+      <div class="label">This month, after everything</div>
+      <div class="amount"><span class="amount out">£42.10</span></div>
+      <!-- Negative month. Shown in ink with the outgoing glyph. Information, not an alarm. -->
+    </div>
+
+    <div class="note">
+      Your holiday fund reached its goal this week.
+    </div>
+
+    <section>
+      <h2>Recently</h2>
+      <div class="ledger">
+        <div class="row">
+          <span class="what">Greengrocer<span class="when">Thu</span></span>
+          <span class="amount out">£18.40</span>
+        </div>
+        <div class="row">
+          <span class="what">Salary<span class="when">Wed</span></span>
+          <span class="amount in">£2,140.00</span>
+        </div>
+        <div class="row">
+          <span class="what">Rent<span class="when">Mon</span></span>
+          <span class="amount out">£1,150.00</span>
+        </div>
+        <div class="row">
+          <span class="what">Bookshop<span class="when">Sun</span></span>
+          <span class="amount out">£12.99</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>Everything in its place.</footer>
+  </div>
+</body>
+</html>
