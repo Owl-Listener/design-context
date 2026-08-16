@@ -1,0 +1,33 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Linter tests
+        run: python3 tools/test_lint.py
+
+      - name: Template
+        run: python3 tools/lint_design_context.py template --allow-placeholders --strict
+
+      - name: Examples
+        run: |
+          python3 tools/lint_design_context.py \
+            examples/calm-ledger \
+            examples/bright-start \
+            examples/switchboard \
+            --strict

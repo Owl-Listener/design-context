@@ -20,6 +20,8 @@ This directory is the project's design intent, readable by any agent. Load the f
 
 Calm Ledger is a personal finance app for people who find money stressful. The design bet is that a finance tool can lower your heart rate instead of raising it.
 
+This example stays on spec v0.1 on purpose. Nothing here needs anything v0.2 added, and the promise in [MIGRATION.md](../../../MIGRATION.md) is that a conforming directory doesn't stop conforming because the spec moved — an example that quietly upgraded itself would be a poor demonstration of that. The linter passes it clean and prints one note saying a newer version exists.
+
 What each file captures:
 
 - `decisions.md` — settled design decisions with reasons. Constraints, not suggestions. They outrank everything else here.

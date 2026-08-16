@@ -18,12 +18,15 @@ your-project/
     ├── vocab.md        ← shared aesthetic vocabulary (from vocab-protocol)
     ├── voice.md        ← verbal identity (from voice-protocol)
     ├── tokens.md       ← token intent annotations (from tokens-protocol)
+    ├── trace.md        ← a cold read of what the product feels like now (from trace-protocol)
     └── decisions.md    ← the memory: every design decision, dated, with reasons
 ```
 
 The agent reads `index.md` first. It tells the agent what exists, what order to read it in, and when each file was last touched. The perceptual files carry intent. `decisions.md` carries memory. Together they mean a session can begin where the last one ended, not at zero.
 
 None of the individual formats are new. mood, vocab, voice, and tokens come from the existing protocols, this project doesn't replace them, it gives them a shared home and a load order. What's new is the manifest, the decision log, and the discipline of treating design intent as project infrastructure.
+
+Only `index.md` and `decisions.md` are required, and only those two ship in the template: a mood file with nothing in it is worse than no mood file, because an agent will read it. [SPEC section 4](SPEC.md#4-the-optional-files) describes what each of the others looks like when it's filled, so you can tell whether one you already have will slot in without going and reading five other repositories.
 
 ## Quick start
 
@@ -49,19 +52,32 @@ This turns critique from a conversation that evaporates into memory that compoun
 
 Two skills ship with this repo (`skills/`):
 
-- **init-design-context** — interviews you about the project, generates the directory, and runs the mood and vocab protocols to fill it. For starting well.
+- **init-design-context** — generates the directory and fills it. Two paths: interview-first for a new project, and read-the-product-first for an existing one, where the intent is in the codebase and the pull request history rather than in anyone's head. For starting well, or starting late.
 - **update-design-context** — invoked when a decision is made mid-session ("record that"), or at session end to sweep the conversation for decisions worth keeping. For not forgetting.
 
 Both are plain SKILL.md files. Claude Code, Gemini CLI, Cursor, anywhere the skills format works.
 
 ## The examples
 
-Two worked examples live in `examples/`, each with a filled `design-context/`, a screen built from it, and a dry run reporting what held.
+Three worked examples live in `examples/`, each with a filled `design-context/`, a screen, and a dry run reporting what held.
 
 - **calm-ledger** — a personal finance app whose mood and decisions agree everywhere. The run tests whether a Because field generalises to cases the decision never explicitly mentioned.
 - **bright-start** — a children's reading app whose mood and decisions genuinely conflict, because a usability round overturned the kickoff mood six weeks after it was written. The run tests whether an agent flags that conflict or resolves it silently.
+- **switchboard** — a four year old internal dispatch tool with three stylesheets, no designer since 2024, and nobody left who remembers why it looks like this. The run tests adoption: what you can reconstruct from a product when there's no one to interview, and how to tell a decision apart from an accident that hardened into one.
 
-The dry runs are the useful part. Both end with findings that became new entries in the example's own `decisions.md`, which is the loop this repo is arguing for.
+The first two are greenfield, which is the easy case. switchboard is the common one.
+
+The dry runs are the useful part. All three end with findings that became new entries in the example's own `decisions.md`, or in the spec. Two of bright-start's findings are why there's a v0.2.
+
+## The linter
+
+```
+python3 tools/lint_design_context.py path/to/your-project
+```
+
+Checks that a `design-context/` directory says what the spec says it should: frontmatter parses, roles are real, `load_order` matches `files`, every listed file exists, every entry has a Because, entries run newest first, supersessions hang together in both directions. Python 3, standard library, no install, runs in CI here over the template and all three examples.
+
+It checks that the record is well formed. Whether the record is *true* is a human's job and always will be. [tools/README.md](tools/README.md) has the full list of what it deliberately doesn't check.
 
 ## Relationship to the family
 
@@ -71,7 +87,11 @@ Procedural files tell the agent how to do the work. Perceptual files tell it wha
 
 ## Status
 
-v0.1. The manifest format, the decision log format, and both skills are usable today. What's not yet built: staleness warnings, a critique-protocol integration once that protocol ships, and worked examples from real projects. Build what's needed, ship it small, learn, keep going.
+v0.2. The manifest format, the decision log format, both skills, the linter and three worked examples are usable today. v0.1 directories stay valid and migration is opt-in; [MIGRATION.md](MIGRATION.md) has the path and the versioning promise.
+
+v0.2 answered two questions v0.1 left open: how to mark a perceptual file that has aged in part, and how to phrase a ban so it doesn't quietly generate the next ambiguity. Both came out of the dry runs rather than out of theory.
+
+What's still not built: roles for the rest of the protocol family, a critique-protocol integration, any real account of what happens when a decision log gets long, and any evidence from a project that isn't mine. Those and the rest live in [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md), with what it would take to close each one. Build what's needed, ship it small, learn, keep going.
 
 ## License
 
