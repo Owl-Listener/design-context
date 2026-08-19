@@ -1,3 +1,5 @@
 .DS_Store
 .obsidian/
 .trash/
+__pycache__/
+*.pyc

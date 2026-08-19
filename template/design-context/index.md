@@ -1,5 +1,5 @@
 ---
-spec: design-context/v0.1
+spec: design-context/v0.2
 project: PROJECT_NAME
 updated: YYYY-MM-DD
 files:
@@ -22,15 +22,31 @@ What each file captures:
 
 <!-- Add a file to the frontmatter and to the list above as you create it, never before.
 A manifest entry for a file that isn't there sends the agent looking for something it
-cannot read, and the spec has no answer for what it should do then.
+cannot read, and the spec has no answer for what it should do then. `files` and
+`load_order` name exactly the same set.
 
     path: mood.md      role: aesthetic-intent    source: mood-protocol
     path: vocab.md     role: vocabulary          source: vocab-protocol
     path: voice.md     role: verbal-identity     source: voice-protocol
     path: tokens.md    role: token-intent        source: tokens-protocol
+    path: trace.md     role: trace               source: trace-protocol
 
-decisions.md always stays first in load_order. Add the rest after it, in the order above.
-Only create a file you have real content for. Empty scaffolds are noise.
+decisions.md always stays first in load_order. Add the rest after it, in the order
+above, with trace.md last: a trace describes what the product is, not what it should be.
+
+Only create a file you have real content for. Empty scaffolds are noise, which is why
+none of them ship in this template. SPEC.md section 4 describes what each one looks
+like when it's filled, and examples/switchboard has a filled trace.md, mood.md and
+tokens.md to read side by side.
+
+A file that has been overtaken in part by a later decision says so here:
+
+    - path: mood.md
+      role: aesthetic-intent
+      source: mood-protocol
+      updated: 2026-06-12
+      status: partial
+      governed_by: 2026-07-30 — Title of the decision that governs
 -->
 
 If something you're about to generate conflicts with a settled decision or the mood, say so before proceeding. If a file seems stale relative to the current direction, flag it rather than silently obeying it.

@@ -2,6 +2,12 @@
 
 Append-only. Newest first. Never edit or delete an entry: reversals are new entries that supersede old ones.
 
+## 2026-08-16 — The mood file's staleness is recorded in the manifest, not here
+**Decision:** `mood.md` carries `status: partial` and `governed_by: 2026-07-30 — No celebration animations on completion` in `index.md`. The 2026-08-09 entry that said the same thing in prose is superseded.
+**Because:** design-context v0.2 added a status field for exactly this, and a fact about a file belongs in the manifest, where an agent reads it before it opens the file, rather than in an entry it has to reason its way to. The old entry called itself a workaround and asked for this field. Nothing about the project changed; the format grew somewhere to put it.
+**Supersedes:** 2026-08-09 — mood.md predates the July research and is read as historical intent
+**Status:** settled
+
 ## 2026-08-09 — Finishing a book opens a full page illustration
 **Decision:** Completion is acknowledged with a static, full bleed illustrated page that the child arrives at, in the mood's saturated palette, carrying one line of warm copy. It does not animate, make sound, or award anything.
 **Because:** The 2026-07-30 decision banned celebration animation but left "how do we mark finishing at all" open, so the first build had to invent an answer. A page you arrive at is generous and colourful, which is what the mood is really asking for, without being a reward that competes with the reading. Colour and scale can carry celebration. Motion was the part that made it addictive.
@@ -12,7 +18,7 @@ Append-only. Newest first. Never edit or delete an entry: reversals are new entr
 **Decision:** Until `mood.md` is revised, its Rewarding and Kinetic qualities are treated as a record of what we wanted in June, not as current instruction. The 2026-07-30 decision governs anything they touch.
 **Because:** The mood was written on 2026-06-12 and the completion research happened six weeks later. The file still tells agents to do the thing we banned, in three separate places, so every future session will rediscover the same conflict until someone rewrites it. Recording it here answers the conflict once. This is a workaround: perceptual files have no status field of their own, and arguably should.
 **Supersedes:** none
-**Status:** settled
+**Status:** superseded
 
 ## 2026-07-30 — No celebration animations on completion
 **Decision:** Finishing a book, a page, or a run of days produces no animation, no sound, no badge, and no confetti. Acknowledgement is static and quiet.

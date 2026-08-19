@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switchboard — Dispatch board</title>
+<style>
+  /* The dispatch board after the first change made with design-context/ loaded,
+     2026-08-16. This is not a new screen: it is the existing board with the
+     colour audit applied. Brownfield changes are edits, not builds.
+
+     Constraints applied:
+       - board stays dense (decision 2026-08-16): 11px rows, 4px padding, no
+         change to row height. The urge to open this up is the thing the
+         decision exists to stop.
+       - red is the undo window only (decision 2026-08-16). Late routes moved
+         to the amber left border, unavailable drivers to an outlined pill.
+       - driver names never truncated (decision 2025-11-10): the two Okonkwos
+         wrap to a second line rather than eliding.
+       - filters in the toolbar, not a sidebar (decision 2025-04-22).
+       - refresh.css tokens only (decision 2026-08-16); no legacy values.
+       - no motion except the undo countdown (tokens.md, Motion).
+
+     Not applied: everything else. There is no redesign here (decision
+     2026-08-16), and the screen should look like the same tool it was on
+     Friday. */
+
+  :root {
+    --text-primary: #1A1C1F;
+    --text-secondary: #6E7076;   /* the one grey; legacy has two more */
+    --surface: #FFFFFF;
+    --rule: #E3E5E8;
+    --danger: #C2372D;           /* undo window only */
+    --warning: #B4700A;          /* late routes, as a border, never a fill */
+    --radius: 3px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--surface);
+    color: var(--text-primary);
+    font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 12px 16px;
+  }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  header h1 { font-size: 15px; font-weight: 600; }
+  header .count { font-size: 11px; color: var(--text-secondary); }
+
+  /* Decision 2025-04-22: one row of controls, above the board. */
+  .toolbar {
+    display: flex;
+    gap: 6px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 8px;
+  }
+  .toolbar select, .toolbar input {
+    font: inherit;
+    font-size: 11px;
+    padding: 3px 6px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text-primary);
+  }
+  .toolbar input { flex: 1; max-width: 220px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 4px 8px;               /* the tightest value in the scale, on purpose */
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  tbody tr:hover { background: #F6F7F8; }
+
+  /* Late routes. Previously a red row fill, which put four meanings on one
+     colour. Now a 3px amber rule: still findable at a glance across sixty
+     rows, no longer competing with the undo state. */
+  tr.late td:first-child { box-shadow: inset 3px 0 0 var(--warning); }
+
+  .driver { max-width: 150px; }     /* wraps; never truncates */
+  .route { color: var(--text-secondary); }
+  .time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* Unavailable drivers carry the word, not a colour alone. */
+  .pill {
+    display: inline-block;
+    padding: 0 4px;
+    border: 1px solid var(--text-secondary);
+    border-radius: var(--radius);
+    font-size: 10px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  /* The only red on the screen, and the only animation in the product. */
+  .undo {
+    position: relative;
+    margin-top: 8px;
+    padding: 5px 8px;
+    border: 1px solid var(--danger);
+    border-radius: var(--radius);
+    color: var(--danger);
+    font-size: 11px;
+    overflow: hidden;
+  }
+  .undo button {
+    font: inherit;
+    color: var(--danger);
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+  .undo .bar {
+    position: absolute;
+    left: 0; bottom: 0; height: 2px;
+    background: var(--danger);
+    width: 100%;
+    animation: countdown 5s linear forwards;
+  }
+  @keyframes countdown { to { width: 0; } }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Dispatch board</h1>
+    <span class="count">62 routes · Thu 16 Aug · 14:07</span>
+  </header>
+
+  <div class="toolbar">
+    <select><option>All depots</option><option>Bermondsey</option><option>Erith</option></select>
+    <select><option>All shifts</option><option>Early</option><option>Late</option></select>
+    <select><option>All states</option><option>Late only</option><option>Unassigned</option></select>
+    <input type="search" placeholder="Driver or route">
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Route</th><th>Driver</th><th>Depot</th><th>Due</th><th>State</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="late">
+        <td class="route">BX-1140</td>
+        <td class="driver">Chidinma Okonkwo</td>
+        <td>Bermondsey</td>
+        <td class="time">14:20</td>
+        <td>18 min late</td>
+      </tr>
+      <tr>
+        <td class="route">BX-1141</td>
+        <td class="driver">Emmanuel Okonkwo</td>
+        <td>Bermondsey</td>
+        <td class="time">14:35</td>
+        <td>On route</td>
+      </tr>
+      <tr>
+        <td class="route">BX-1142</td>
+        <td class="driver">R. Whitfield-Marchetti</td>
+        <td>Bermondsey</td>
+        <td class="time">14:40</td>
+        <td>On route</td>
+      </tr>
+      <tr>
+        <td class="route">ER-0908</td>
+        <td class="driver">S. Adeyemi</td>
+        <td>Erith</td>
+        <td class="time">14:45</td>
+        <td><span class="pill">Unavailable</span></td>
+      </tr>
+      <tr class="late">
+        <td class="route">ER-0909</td>
+        <td class="driver">J. Kaur</td>
+        <td>Erith</td>
+        <td class="time">14:50</td>
+        <td>6 min late</td>
+      </tr>
+      <tr>
+        <td class="route">ER-0910</td>
+        <td class="driver">P. Nowak</td>
+        <td>Erith</td>
+        <td class="time">15:05</td>
+        <td>On route</td>
+      </tr>
+      <tr>
+        <td class="route">BX-1143</td>
+        <td class="driver">A. Boateng</td>
+        <td>Bermondsey</td>
+        <td class="time">15:10</td>
+        <td>Loading</td>
+      </tr>
+      <tr>
+        <td class="route">BX-1144</td>
+        <td class="driver">—</td>
+        <td>Bermondsey</td>
+        <td class="time">15:15</td>
+        <td>Unassigned</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Reassignment committed. The only red on the board, and it is here for
+       five seconds. Decision 2026-08-16. -->
+  <div class="undo">
+    ER-0910 reassigned to P. Nowak. <button type="button">Undo</button>
+    <span class="bar"></span>
+  </div>
+</body>
+</html>

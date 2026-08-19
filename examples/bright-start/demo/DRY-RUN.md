@@ -37,3 +37,11 @@ That became a `provisional` entry. The staleness of the mood file became a secon
 2. **A ban needs a replacement.** "No celebration animations" says what not to do and leaves the positive case unspecified. That is the same shape as the calm-ledger finding about positive money colour, from a completely different project and mood, which suggests it is structural rather than coincidental. Decisions phrased as prohibitions reliably generate a follow up decision. The spec could say so: when you ban something the mood asks for, expect to specify the substitute.
 
 3. **Perceptual files have no status field.** `decisions.md` entries can be `settled`, `provisional`, or `superseded`. `mood.md` has no equivalent, so "this was true in June and is now partly wrong" has nowhere to live except a decision entry pointing back at it, which is what we did. It works, and it reads like a workaround. A `status` in the manifest's file list, or a `superseded_in_part` marker, would say it properly.
+
+## Since this run — 2026-08-16
+
+Findings 1 and 3 are answered in spec v0.2, and this example is now the worked case for both.
+
+`mood.md` carries `status: partial` and `governed_by: 2026-07-30 — No celebration animations on completion` in the manifest, which is finding 3 implemented as a field instead of a workaround. The decision entry that had been doing that job was superseded rather than deleted, so the log still shows the shape of the problem and the shape of the answer. That is finding 1 too: precedence still only decides who wins, but the manifest now has somewhere to record that the loser is half wrong, which is the repair the run said was missing.
+
+Finding 2 became the `Instead:` field. It is not applied retroactively: the 2026-07-30 entry still names no substitute, because entries are append-only and migration does not rewrite history. Running the linter over this directory prints two notes about exactly that, on this entry and on the score ban from June. Those notes are the correct output. They are a reading of a log that predates the rule, not a list of things to go and fix.
