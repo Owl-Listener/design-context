@@ -1,0 +1,1143 @@
+<title>The Taste Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;700&family=Nunito:wght@400;600;800&display=swap">
+
+<style>
+/* ─────────────────────────────────────────────
+   SHELL TOKENS — the examination room
+   ───────────────────────────────────────────── */
+:root{
+  --ground:#E9EBE8;
+  --surface:#F7F8F6;
+  --sunk:#DFE2DE;
+  --ink:#16191A;
+  --ink-2:#3D443F;
+  --muted:#6A716E;
+  --line:#CBCFCA;
+  --line-soft:#DBDFDA;
+  --red:#B4453C;
+  --green:#2E7D5B;
+  --red-wash:rgba(180,69,60,.10);
+  --green-wash:rgba(46,125,91,.10);
+  --plate-shadow:0 1px 2px rgba(22,25,26,.05), 0 12px 32px -18px rgba(22,25,26,.35);
+
+  --f-display:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+
+  --step-0:.9375rem;
+  --step-1:1.0625rem;
+  --step-2:1.375rem;
+  --step-3:2rem;
+  --step-4:clamp(2.5rem,7vw,4.25rem);
+  --step-5:clamp(3rem,11vw,7rem);
+
+  --gut:clamp(1.25rem,4vw,3rem);
+  --ease:cubic-bezier(.2,.7,.25,1);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#131513;
+    --surface:#1B1E1C;
+    --sunk:#0D0F0D;
+    --ink:#E7EAE6;
+    --ink-2:#C2C8C3;
+    --muted:#939A95;
+    --line:#2E332F;
+    --line-soft:#242926;
+    --red:#E0655A;
+    --green:#4FB183;
+    --red-wash:rgba(224,101,90,.13);
+    --green-wash:rgba(79,177,131,.13);
+    --plate-shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 36px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#131513;
+  --surface:#1B1E1C;
+  --sunk:#0D0F0D;
+  --ink:#E7EAE6;
+  --ink-2:#C2C8C3;
+  --muted:#939A95;
+  --line:#2E332F;
+  --line-soft:#242926;
+  --red:#E0655A;
+  --green:#4FB183;
+  --red-wash:rgba(224,101,90,.13);
+  --green-wash:rgba(79,177,131,.13);
+  --plate-shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 36px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--f-ui);
+  font-size:var(--step-0);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,p,ul,ol,figure{margin:0}
+button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px}
+
+.mono{font-family:var(--f-mono)}
+.eyebrow{
+  font-family:var(--f-mono);
+  font-size:.6875rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* ── chrome ── */
+.bar{
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.75rem var(--gut);
+  border-bottom:1px solid var(--line-soft);
+  background:var(--ground);
+  background:color-mix(in srgb,var(--ground) 88%,transparent);
+  backdrop-filter:blur(10px);
+}
+.bar__mark{display:flex;align-items:baseline;gap:.5rem}
+.bar__mark b{font-family:var(--f-display);font-weight:400;font-size:var(--step-1);letter-spacing:.01em}
+.bar__nav{display:flex;align-items:center;gap:1.25rem}
+.linkish{
+  font-family:var(--f-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);padding-bottom:1px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;
+}
+.linkish:hover{color:var(--ink);border-bottom-color:var(--line)}
+.linkish[hidden]{display:none}
+
+/* ── screens ── */
+.screen{display:none}
+.screen.is-on{display:block}
+
+/* ─────────────────────────────────────────────
+   INTRO
+   ───────────────────────────────────────────── */
+.intro{
+  max-width:74rem;margin:0 auto;padding:clamp(2.5rem,7vw,5rem) var(--gut) 4rem;
+  display:grid;gap:clamp(2rem,5vw,3.5rem);
+  grid-template-columns:1fr;
+}
+@media(min-width:60rem){.intro{grid-template-columns:1.05fr .95fr;align-items:center}}
+.intro__lede h1{
+  font-family:var(--f-display);font-weight:400;font-size:var(--step-4);
+  line-height:.98;letter-spacing:-.015em;text-wrap:balance;margin-top:.85rem;
+}
+.intro__lede h1 em{font-style:italic;color:var(--green)}
+.intro__body{
+  max-width:34ch;margin-top:1.4rem;color:var(--ink-2);font-size:var(--step-1);line-height:1.6;
+}
+.intro__body + .intro__body{margin-top:.9rem}
+.intro__actions{display:flex;flex-wrap:wrap;align-items:center;gap:1.25rem;margin-top:2rem}
+.btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.8rem 1.4rem;border:1px solid var(--ink);background:var(--ink);color:var(--ground);
+  font-weight:600;font-size:var(--step-0);letter-spacing:.005em;
+  transition:transform .18s var(--ease),opacity .18s;
+}
+.btn:hover{transform:translateY(-1px);opacity:.9}
+.btn--ghost{background:none;color:var(--ink);border-color:var(--line)}
+.btn--ghost:hover{border-color:var(--ink)}
+.btn:active{transform:translateY(0)}
+
+.intro__specs{position:relative;display:grid;gap:.75rem}
+.intro__caption{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.intro__stage{position:relative;border:1px solid var(--line);background:var(--surface);box-shadow:var(--plate-shadow)}
+.intro__stage .sp{transition:opacity .5s var(--ease)}
+
+/* ─────────────────────────────────────────────
+   THE TEST
+   ───────────────────────────────────────────── */
+.test{padding:clamp(1.25rem,3vw,2rem) var(--gut) 3rem;max-width:88rem;margin:0 auto}
+.test__head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.test__q{font-family:var(--f-display);font-size:var(--step-2);font-weight:400}
+.ticks{display:flex;gap:3px;align-items:center}
+.tick{width:9px;height:3px;background:var(--line);transition:background .3s var(--ease)}
+.tick.is-done{background:var(--ink-2)}
+.tick.is-now{background:var(--green);width:16px}
+
+.plates{display:grid;gap:clamp(.75rem,2vw,1.25rem);grid-template-columns:1fr}
+@media(min-width:52rem){.plates{grid-template-columns:1fr 1fr}}
+.plate{
+  display:flex;flex-direction:column;text-align:left;width:100%;
+  min-height:min(60vh,26rem);
+  border:1px solid var(--line);background:var(--surface);
+  box-shadow:var(--plate-shadow);
+  transition:transform .22s var(--ease),box-shadow .22s var(--ease),border-color .22s;
+}
+.plate:hover,.plate:focus-visible{transform:translateY(-3px)}
+.plate--a:hover,.plate--a:focus-visible{border-color:var(--red);box-shadow:0 0 0 3px var(--red-wash),var(--plate-shadow)}
+.plate--b:hover,.plate--b:focus-visible{border-color:var(--green);box-shadow:0 0 0 3px var(--green-wash),var(--plate-shadow)}
+.plate__body{flex:1;min-height:0}
+.plate__foot{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.6rem .9rem;border-top:1px solid var(--line);
+}
+.plate__key{
+  font-family:var(--f-mono);font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+}
+.plate--a .plate__key{color:var(--red)}
+.plate--b .plate__key{color:var(--green)}
+.plate__hint{font-family:var(--f-mono);font-size:.6875rem;color:var(--muted);letter-spacing:.06em}
+.plates.is-leaving .plate{opacity:0;transform:translateY(6px);transition:opacity .16s,transform .16s}
+.test__foot{margin-top:1.25rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+@media(max-width:34rem){
+  .bar__mark span{display:none}
+  .bar__mark b{white-space:nowrap}
+  .bar__nav{gap:1rem}
+  .plate{min-height:0}
+  .plate__hint{display:none}
+  .plate__key{font-size:.8125rem}
+}
+
+/* ─────────────────────────────────────────────
+   RESULT
+   ───────────────────────────────────────────── */
+.result{max-width:52rem;margin:0 auto;padding:clamp(2rem,6vw,4rem) var(--gut) 5rem}
+.reveal{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.reveal.is-in{opacity:1;transform:none}
+.result__name{
+  font-family:var(--f-display);font-weight:400;font-size:var(--step-5);line-height:.92;
+  letter-spacing:-.02em;text-wrap:balance;margin:.6rem 0 0;
+}
+.result__gloss{margin-top:1.1rem;font-size:var(--step-1);color:var(--ink-2);max-width:40ch}
+.result__stats{display:flex;flex-wrap:wrap;gap:2rem;margin-top:1.75rem;padding-top:1.25rem;border-top:1px solid var(--line-soft)}
+.stat b{display:block;font-family:var(--f-mono);font-size:var(--step-2);font-weight:500;font-variant-numeric:tabular-nums}
+
+.section{margin-top:clamp(2.5rem,6vw,3.5rem)}
+.section__head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--line)}
+.section h2{font-family:var(--f-display);font-weight:400;font-size:var(--step-2)}
+
+.meters{display:grid;gap:1.05rem;margin-top:1.35rem}
+.meter{display:grid;gap:.4rem}
+.meter__labs{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.meter__labs span.is-won{color:var(--ink);font-weight:600}
+.meter__track{position:relative;height:8px;background:var(--sunk);border:1px solid var(--line-soft)}
+.meter__center{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--line)}
+.meter__fill{position:absolute;top:0;bottom:0;background:var(--ink);width:0;transition:width .8s var(--ease),left .8s var(--ease)}
+
+.qualities{display:grid;gap:1.1rem;margin-top:1.35rem}
+.quality{display:grid;gap:.3rem;padding-left:1rem;border-left:2px solid var(--green)}
+.quality b{font-size:var(--step-1)}
+.quality span{color:var(--ink-2);max-width:62ch}
+.quality--held{border-left-color:var(--muted)}
+
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:.9rem;margin-top:1.35rem}
+.chip{display:flex;flex-direction:column;border:1px solid var(--line);background:var(--surface);overflow:hidden}
+.chip__body{flex:1;min-height:0;pointer-events:none;display:flex}
+.chip__body > .sp{flex:1}
+.chip__foot{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;padding:.5rem .7rem;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase}
+.chip__n{color:var(--muted);font-variant-numeric:tabular-nums}
+
+.file{margin-top:1.35rem;border:1px solid var(--line);background:var(--surface)}
+.file__bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.55rem .8rem;border-bottom:1px solid var(--line)}
+.file__name{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.04em}
+.file__name input{
+  font:inherit;color:inherit;background:var(--sunk);border:1px solid var(--line);
+  padding:.15rem .35rem;width:11ch;
+}
+.file pre{
+  margin:0;padding:1rem;overflow-x:auto;
+  font-family:var(--f-mono);font-size:.78rem;line-height:1.7;white-space:pre-wrap;word-break:break-word;
+  color:var(--ink-2);max-height:26rem;overflow-y:auto;
+}
+.mini{
+  font-family:var(--f-mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.35rem .7rem;border:1px solid var(--line);transition:border-color .2s,background .2s;
+}
+.mini:hover{border-color:var(--ink);background:var(--sunk)}
+.note{margin-top:.75rem;color:var(--muted);font-size:.8125rem;max-width:60ch}
+.result__actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2.5rem}
+
+/* ─────────────────────────────────────────────
+   GALLERY
+   ───────────────────────────────────────────── */
+.gallery{max-width:88rem;margin:0 auto;padding:clamp(1.5rem,4vw,2.5rem) var(--gut) 5rem}
+.gallery__head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--line)}
+.gallery h2{font-family:var(--f-display);font-weight:400;font-size:var(--step-3)}
+.switcher{display:flex;flex-wrap:wrap;gap:.4rem}
+.switcher button{
+  font-family:var(--f-mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.35rem .65rem;border:1px solid var(--line);color:var(--muted);transition:.2s;
+}
+.switcher button:hover{color:var(--ink);border-color:var(--ink-2)}
+.switcher button[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr));gap:1rem;margin-top:1.5rem}
+.card{display:flex;flex-direction:column;border:1px solid var(--line);background:var(--surface);box-shadow:var(--plate-shadow)}
+.card > .sp{flex:1}
+.card__foot{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;padding:.55rem .8rem;border-top:1px solid var(--line)}
+.card__name{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
+.card__coords{font-family:var(--f-mono);font-size:.6875rem;color:var(--muted)}
+
+.foot{border-top:1px solid var(--line-soft);padding:1.5rem var(--gut);color:var(--muted);font-size:.8125rem}
+.foot a{color:var(--ink-2)}
+
+/* ─────────────────────────────────────────────
+   SPECIMENS — every style is these tokens, restated
+   ───────────────────────────────────────────── */
+.sp{
+  font-family:var(--s-font);
+  background:var(--s-bg);
+  color:var(--s-fg);
+  padding:var(--s-pad);
+  line-height:var(--s-lh);
+  letter-spacing:var(--s-track);
+  display:flex;flex-direction:column;gap:var(--s-gap);
+  height:100%;
+  container-type:inline-size;
+}
+.sp--sm{--s-scale:.82}
+.sp *{box-sizing:border-box}
+.sp-h{
+  font-family:var(--s-display);
+  font-weight:var(--s-hw);
+  font-size:calc(1.5rem * var(--s-scale,1));
+  line-height:1.12;
+  letter-spacing:var(--s-htrack);
+  margin:0;text-wrap:balance;
+}
+.sp-h--big{font-size:calc(2.1rem * var(--s-scale,1))}
+.sp-p{margin:0;color:var(--s-muted);font-size:calc(.875rem * var(--s-scale,1));max-width:44ch}
+.sp-lab{
+  font-family:var(--s-lab);font-size:calc(.6875rem * var(--s-scale,1));
+  letter-spacing:var(--s-labtrack);text-transform:var(--s-caps);color:var(--s-muted);
+  font-weight:var(--s-labw);
+}
+.sp-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:calc(.7rem * var(--s-scale,1)) 0;border-bottom:var(--s-border) solid var(--s-line)}
+.sp-row:last-child{border-bottom:0}
+.sp-row__t{display:grid;gap:2px;min-width:0}
+.sp-row__t b{font-weight:var(--s-bw);font-size:calc(.9375rem * var(--s-scale,1));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-num{font-variant-numeric:tabular-nums;font-family:var(--s-numfont);font-weight:var(--s-bw);font-size:calc(.9375rem * var(--s-scale,1));white-space:nowrap}
+.sp-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:calc(.62rem * var(--s-scale,1)) calc(1.1rem * var(--s-scale,1));
+  background:var(--s-accent);color:var(--s-accent-fg);
+  border-radius:var(--s-radius);border:var(--s-border) solid var(--s-btn-line,transparent);
+  box-shadow:var(--s-shadow);
+  font-family:var(--s-font);font-weight:var(--s-bw);font-size:calc(.875rem * var(--s-scale,1));
+  letter-spacing:var(--s-btntrack);text-transform:var(--s-btncaps,none);
+}
+.sp-btn--2{background:transparent;color:var(--s-fg);border-color:var(--s-line);box-shadow:none}
+.sp-btns{display:flex;flex-wrap:wrap;gap:calc(.6rem * var(--s-scale,1));align-items:center}
+.sp-card{
+  background:var(--s-surface);border:var(--s-border) solid var(--s-line);
+  border-radius:var(--s-radius);box-shadow:var(--s-shadow);
+  padding:calc(1.1rem * var(--s-scale,1));display:grid;gap:calc(.55rem * var(--s-scale,1));
+}
+.sp-input{
+  display:block;width:100%;
+  padding:calc(.6rem * var(--s-scale,1)) calc(.75rem * var(--s-scale,1));
+  background:var(--s-surface);color:var(--s-fg);
+  border:var(--s-border) solid var(--s-line);border-radius:var(--s-radius);
+  font-family:var(--s-font);font-size:calc(.9375rem * var(--s-scale,1));
+}
+.sp-field{display:grid;gap:calc(.35rem * var(--s-scale,1))}
+.sp-stat{font-family:var(--s-numfont);font-variant-numeric:tabular-nums;font-size:calc(3.1rem * var(--s-scale,1));line-height:1;font-weight:var(--s-hw);letter-spacing:-.02em}
+.sp-delta{display:inline-flex;align-items:center;gap:.35rem;color:var(--s-accent);font-weight:var(--s-bw);font-size:calc(.8125rem * var(--s-scale,1))}
+.sp-mark{
+  width:calc(2.6rem * var(--s-scale,1));height:calc(2.6rem * var(--s-scale,1));
+  border:var(--s-border) solid var(--s-line);border-radius:var(--s-radius);
+  display:grid;place-items:center;color:var(--s-accent);
+}
+.sp-mark svg{width:55%;height:55%}
+.sp-rule{height:var(--s-border);background:var(--s-line);border:0;margin:0}
+.sp-spacer{flex:1;min-height:calc(.5rem * var(--s-scale,1))}
+
+@keyframes sp-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes sp-pulse{0%,100%{opacity:1}50%{opacity:.62}}
+.sp--kinetic .sp-btn{animation:sp-bob 2.4s var(--ease) infinite}
+.sp--kinetic .sp-delta{animation:sp-pulse 1.9s var(--ease) infinite}
+@media(prefers-reduced-motion:reduce){
+  .sp--kinetic .sp-btn,.sp--kinetic .sp-delta{animation:none}
+  .reveal{transition-duration:.01ms}
+  .plate,.btn,.meter__fill{transition-duration:.01ms}
+}
+</style>
+
+<header class="bar">
+  <div class="bar__mark">
+    <b>The Taste Test</b>
+    <span class="eyebrow" style="letter-spacing:.1em">20 rounds</span>
+  </div>
+  <nav class="bar__nav">
+    <button class="linkish" id="nav-gallery" type="button">All 12 styles</button>
+    <button class="linkish" id="nav-restart" type="button" hidden>Start over</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══════════════ INTRO ══════════════ -->
+<section class="screen is-on" id="screen-intro">
+  <div class="intro">
+    <div class="intro__lede">
+      <p class="eyebrow">A design instrument &middot; better with one, or two?</p>
+      <h1>Twenty forced choices, and then we&rsquo;ll tell you <em>what you like.</em></h1>
+      <p class="intro__body">Two specimens at a time. Same component, different treatment, no names, no theory. You just pick the one you&rsquo;d ship.</p>
+      <p class="intro__body">At the end you get your position on five axes &mdash; and a filled-in <span class="mono">mood.md</span> you can drop straight into a project so the next agent that touches your interface already knows.</p>
+      <div class="intro__actions">
+        <button class="btn" id="start" type="button">Begin the test</button>
+        <button class="btn btn--ghost" id="browse" type="button">Browse the styles first</button>
+      </div>
+    </div>
+    <figure class="intro__specs">
+      <figcaption class="intro__caption">
+        <span class="eyebrow">Specimen no. <span id="demo-n" class="mono">01</span></span>
+        <span class="eyebrow" id="demo-name">&mdash;</span>
+      </figcaption>
+      <div class="intro__stage" id="demo-stage"></div>
+      <figcaption class="eyebrow" style="text-transform:none;letter-spacing:.02em;line-height:1.5">Every style is the same markup under a different set of tokens. Nothing here is a screenshot.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ══════════════ TEST ══════════════ -->
+<section class="screen" id="screen-test">
+  <div class="test">
+    <div class="test__head">
+      <h2 class="test__q" id="prompt">Which of these would you ship?</h2>
+      <div class="ticks" id="ticks" aria-hidden="true"></div>
+    </div>
+    <div class="plates" id="plates">
+      <button class="plate plate--a" type="button" data-side="0">
+        <div class="plate__body sp-slot"></div>
+        <div class="plate__foot"><span class="plate__key">One</span><span class="plate__hint">&larr; or click</span></div>
+      </button>
+      <button class="plate plate--b" type="button" data-side="1">
+        <div class="plate__body sp-slot"></div>
+        <div class="plate__foot"><span class="plate__key">Two</span><span class="plate__hint">&rarr; or click</span></div>
+      </button>
+    </div>
+    <div class="test__foot">
+      <span class="eyebrow" id="round-label">Round 1 of 20</span>
+      <button class="linkish" id="skip" type="button">No preference &mdash; skip</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ RESULT ══════════════ -->
+<section class="screen" id="screen-result">
+  <div class="result">
+    <div class="reveal" id="rv-1">
+      <p class="eyebrow">Your result</p>
+      <h2 class="result__name" id="r-name">&mdash;</h2>
+      <p class="result__gloss" id="r-gloss"></p>
+      <div class="result__stats">
+        <div class="stat"><span class="eyebrow">Conviction</span><b id="r-conviction">&mdash;</b></div>
+        <div class="stat"><span class="eyebrow">Strongest pull</span><b id="r-strongest" style="font-size:1.0625rem">&mdash;</b></div>
+        <div class="stat"><span class="eyebrow">Rounds judged</span><b id="r-rounds">&mdash;</b></div>
+      </div>
+    </div>
+
+    <section class="section reveal" id="rv-2">
+      <div class="section__head"><h2>Where you landed</h2><span class="eyebrow">Five axes</span></div>
+      <div class="meters" id="meters"></div>
+    </section>
+
+    <section class="section reveal" id="rv-3">
+      <div class="section__head"><h2>What you kept choosing</h2><span class="eyebrow">Top three styles</span></div>
+      <div class="strip" id="r-top"></div>
+    </section>
+
+    <section class="section reveal" id="rv-4">
+      <div class="section__head"><h2>Your mood file</h2><span class="eyebrow">design-context/mood.md</span></div>
+      <div class="file">
+        <div class="file__bar">
+          <span class="file__name">
+            <label for="proj" style="color:var(--muted)">project:</label>
+            <input id="proj" type="text" value="Untitled" maxlength="28" spellcheck="false">
+          </span>
+          <button class="mini" id="copy" type="button">Copy file</button>
+        </div>
+        <pre id="moodfile"></pre>
+      </div>
+      <p class="note">Save it as <span class="mono">design-context/mood.md</span>. It follows mood-protocol, so an agent that reads your <span class="mono">design-context/</span> at session start will load it before it generates anything. Everything here is provisional until it survives a real screen &mdash; that is what the first line of the file says, and it means it.</p>
+      <div class="result__actions">
+        <button class="btn" id="share" type="button">Copy a link to this result</button>
+        <button class="btn btn--ghost" id="again" type="button">Take it again</button>
+        <button class="btn btn--ghost" id="see-all" type="button">See all 12 styles</button>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ══════════════ GALLERY ══════════════ -->
+<section class="screen" id="screen-gallery">
+  <div class="gallery">
+    <div class="gallery__head">
+      <div>
+        <p class="eyebrow">The specimen library</p>
+        <h2>Same screen, every style</h2>
+      </div>
+      <div class="switcher" id="switcher"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p>The Taste Test is a toy for <a href="https://github.com/Owl-Listener/design-context">design-context</a> &mdash; design intent an agent can read, kept in your repo, versioned like everything else. Twelve styles, six components, one set of tokens each.</p>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ═══════════════════════════════════════════════════════
+   1. THE AXES
+   Each axis runs -1 (first pole) to +1 (second pole).
+   ═══════════════════════════════════════════════════════ */
+var AXES = [
+  {key:"temp",     name:"Temperature", lo:"cool",       hi:"warm"},
+  {key:"density",  name:"Density",     lo:"airy",       hi:"dense"},
+  {key:"edge",     name:"Edge",        lo:"soft",       hi:"sharp"},
+  {key:"ornament", name:"Ornament",    lo:"restrained", hi:"expressive"},
+  {key:"energy",   name:"Energy",      lo:"still",      hi:"kinetic"}
+];
+
+/* Every pole carries the language it contributes to the mood file. */
+var POLES = {
+  cool:{
+    noun:"The Instrument", adj:"Cool-headed",
+    quality:"Cool-headed", qtext:"Neutrals sit blue-grey and stay there. Nothing in the palette is trying to be liked, and the accent does not warm it up.",
+    ref:"A well-lit operating theatre: clean light, no atmosphere, nothing hiding.",
+    anti:"NOT hospitality: no cream grounds, no warm white, no candlelight in the neutrals.",
+    line:"The palette stays cool and even, and nothing in it is trying to be liked."
+  },
+  warm:{
+    noun:"The Reading Room", adj:"Warm",
+    quality:"Legible warmth", qtext:"Warm paper neutrals and ink instead of black. The warmth comes from the ground, not from a bright accent laid on top of it.",
+    ref:"Muji stationery: utility with softness.",
+    anti:"NOT a cool product palette: no blue-grey neutrals, no cold white, no slate.",
+    line:"Warmth comes from the ground — paper neutrals and ink, not a bright accent."
+  },
+  airy:{
+    noun:"The Gallery", adj:"Unhurried",
+    quality:"Unhurried density", qtext:"Fewer things per screen than the category expects. White space is doing work here; it is the trust signal, not the leftover.",
+    ref:"A well-set paperback page: the typography carries the calm.",
+    anti:"NOT a dashboard: no grid of tiles, nothing packed to the edges, no summary row above the data.",
+    line:"There is less on the screen than the category expects, and the space is the point."
+  },
+  dense:{
+    noun:"The Departures Board", adj:"Impatient",
+    quality:"Quick before comfortable", qtext:"Where speed of scanning and comfort of reading disagree, scanning wins. Every row of padding is a row of content someone has to scroll for.",
+    ref:"A departures board: dense, glanceable, no ornament, and nobody has ever complained about its typography.",
+    anti:"NOT a landing page: no hero, no breathing room bought with a scroll, no whitespace as a flex.",
+    line:"Everything sits within one glance; scanning beats comfort when the two disagree."
+  },
+  soft:{
+    noun:"The Soft Machine", adj:"Softened",
+    quality:"Rounded, not childish", qtext:"Radius is generous and consistent across every surface. Softness is the default state of the interface, not something the interface gives you as a reward.",
+    ref:"River stones: nothing has a corner left on it.",
+    anti:"NOT an instrument panel: no hairline boxes, no hard right angles used as a house style.",
+    line:"Corners are round and edges are gentle; nothing here comes to a hard stop."
+  },
+  sharp:{
+    noun:"The Card Index", adj:"Hard-edged",
+    quality:"Square-cornered", qtext:"Corners are square and rules are hairlines. Edges do the organising that shadow and radius would do elsewhere, which means the structure is visible rather than implied.",
+    ref:"A card index: square, stackable, built before radius was a decision anyone made.",
+    anti:"NOT consumer-app friendly: no pill buttons, no soft-shadowed floating cards.",
+    line:"Corners are square and rules are hairlines; structure comes from edges, not shadows."
+  },
+  restrained:{
+    noun:"The White Cube", adj:"Disciplined",
+    quality:"Nothing decorative", qtext:"One accent, used for one job. Colour means something here or it is not on the screen, and no element is present purely to be looked at.",
+    ref:"Swiss timetable typography: information that never raises its voice.",
+    anti:"NOT expressive: no gradients, no second accent, no colour used to set a mood.",
+    line:"One accent, one job — colour means something here or it is not used."
+  },
+  expressive:{
+    noun:"The Carnival", adj:"Loud",
+    quality:"Loud on purpose", qtext:"Saturated colour, committed shapes, a palette that has clearly chosen a side. Taste is not the constraint; being ignorable is the only failure.",
+    ref:"Playground equipment: primary colours, built to be climbed on.",
+    anti:"NOT tasteful minimalism: no all-grey palette, no single-accent discipline, no restraint as a default setting.",
+    line:"Colour is loud and fully committed, and taste is not the constraint."
+  },
+  still:{
+    noun:"The Still Life", adj:"Quiet",
+    quality:"Steady", qtext:"Nothing pulses, bounces or urges. Motion, where it exists at all, is a slow fade, and the interface never asks to be watched.",
+    ref:"A Japanese bank passbook: money as a quiet record, not a dashboard.",
+    anti:"NOT gamified: no confetti, no streaks, no celebration animation, no mascot.",
+    line:"Nothing pulses or urges; motion, where it exists, is a slow fade."
+  },
+  kinetic:{
+    noun:"The Flip-Clock", adj:"Restless",
+    quality:"Kinetic", qtext:"Things move, and the movement is part of the message. Motion marks change rather than decorating a surface that has not changed.",
+    ref:"A flip-clock: the change itself is the event.",
+    anti:"NOT static: no interface whose only transition is a cross-fade, no state change that arrives with no arrival.",
+    line:"Things move, and the movement carries meaning rather than asking for attention."
+  }
+};
+
+/* ═══════════════════════════════════════════════════════
+   2. THE STYLE LIBRARY
+   A style is a token bundle plus a position on the axes.
+   Swap this array and the whole instrument re-tunes.
+   ═══════════════════════════════════════════════════════ */
+var BASE = {
+  radius:"0px", border:"1px", shadow:"none", pad:"1.5rem", gap:".9rem",
+  lh:"1.55", track:"0em", htrack:"-.01em", hw:"600", bw:"600",
+  labtrack:".08em", btntrack:".005em", caps:"uppercase", labw:"500", btnLine:"transparent", btnCaps:"none"
+};
+var PLEX="'IBM Plex Sans',system-ui,sans-serif",
+    MONO="'IBM Plex Mono',ui-monospace,monospace",
+    FRAU="'Fraunces',Georgia,serif",
+    INSTR="'Instrument Serif',Georgia,serif",
+    GROT="'Space Grotesk',system-ui,sans-serif",
+    NUN="'Nunito',system-ui,sans-serif";
+
+var STYLES = [
+  {id:"passbook", name:"Passbook", at:[.8,-.5,.7,-.6,-.8], t:{
+    bg:"#F3EFE6", surface:"#FAF7F0", fg:"#23201A", muted:"#7C7364", accent:"#3E5C4B", accentFg:"#F7F4EC", line:"#DED6C7",
+    font:FRAU, display:FRAU, num:FRAU, lab:FRAU, pad:"1.65rem", lh:"1.62", labtrack:".14em", hw:"600"}},
+
+  {id:"terminal", name:"Terminal", at:[-.5,.9,1,.1,-.2], t:{
+    bg:"#0C0F0D", surface:"#121614", fg:"#C9F2D8", muted:"#5E7A69", accent:"#58E08A", accentFg:"#06170D", line:"#1E2A22",
+    font:MONO, display:MONO, num:MONO, lab:MONO, pad:".95rem", gap:".55rem", lh:"1.45", track:".01em", labtrack:".16em", btntrack:".1em", btnCaps:"uppercase"}},
+
+  {id:"bauhaus", name:"Bauhaus", at:[.2,.1,1,.9,.3], t:{
+    bg:"#EFE9DE", surface:"#FFFFFF", fg:"#111111", muted:"#5B5750", accent:"#D3242A", accentFg:"#FFFFFF", line:"#111111",
+    font:GROT, display:GROT, num:GROT, lab:GROT, border:"2px", pad:"1.4rem", hw:"700", bw:"700", labtrack:".18em", htrack:"-.02em"}},
+
+  {id:"lozenge", name:"Lozenge", at:[-.1,-.6,-1,.3,.1], t:{
+    bg:"#EFF1FB", surface:"#FFFFFF", fg:"#2B3050", muted:"#7E86A8", accent:"#6D7BF0", accentFg:"#FFFFFF", line:"#E0E5F8",
+    font:NUN, display:NUN, num:NUN, lab:NUN, radius:"18px", pad:"1.7rem", lh:"1.6", hw:"800", bw:"700",
+    shadow:"0 2px 4px rgba(43,48,80,.05), 0 14px 28px -16px rgba(43,48,80,.35)", labtrack:".1em"}},
+
+  {id:"swiss", name:"Swiss", at:[-.2,.6,.8,-.5,-.4], t:{
+    bg:"#FFFFFF", surface:"#FFFFFF", fg:"#111111", muted:"#767676", accent:"#E1121C", accentFg:"#FFFFFF", line:"#DBDBDB",
+    font:PLEX, display:PLEX, num:PLEX, lab:PLEX, pad:"1.15rem", gap:".7rem", lh:"1.4", htrack:"-.025em", hw:"600", labtrack:".06em", caps:"none"}},
+
+  {id:"neon", name:"Neon", at:[.1,.2,-.3,1,1], t:{
+    bg:"#0B0713", surface:"#170D28", fg:"#F4ECFF", muted:"#9A87C4", accent:"#FF3DA6", accentFg:"#12030B", line:"#2C1B47",
+    font:GROT, display:GROT, num:GROT, lab:MONO, radius:"11px", pad:"1.45rem", hw:"700", bw:"700",
+    shadow:"0 0 0 1px rgba(255,61,166,.28), 0 10px 34px -10px rgba(255,61,166,.55)", labtrack:".18em"}},
+
+  {id:"readingroom", name:"Reading Room", at:[.55,-1,.4,-.7,-.7], t:{
+    bg:"#FBFAF7", surface:"#FBFAF7", fg:"#1A1917", muted:"#6E6A61", accent:"#8A2B22", accentFg:"#FBFAF7", line:"#E3E0D8",
+    font:FRAU, display:INSTR, num:FRAU, lab:FRAU, pad:"2.2rem", gap:"1.2rem", lh:"1.75", hw:"400", bw:"600", labtrack:".2em", htrack:"0em"}},
+
+  {id:"brutalist", name:"Brutalist", at:[-.1,.5,1,.8,.5], t:{
+    bg:"#F2F2EF", surface:"#FFFFFF", fg:"#000000", muted:"#44443F", accent:"#1B36F0", accentFg:"#FFFFFF", line:"#000000",
+    font:GROT, display:GROT, num:GROT, lab:MONO, border:"2px", pad:"1.2rem", gap:".8rem",
+    shadow:"5px 5px 0 #000000", hw:"700", bw:"700", labtrack:".1em", btntrack:".08em", btnCaps:"uppercase", btnLine:"#000000"}},
+
+  {id:"clinical", name:"Clinical", at:[-.9,.4,.1,-.6,-.3], t:{
+    bg:"#F4F6F8", surface:"#FFFFFF", fg:"#16202B", muted:"#6B7A88", accent:"#1E6FD9", accentFg:"#FFFFFF", line:"#DDE4EA",
+    font:PLEX, display:PLEX, num:PLEX, lab:PLEX, radius:"5px", pad:"1.2rem", gap:".7rem",
+    shadow:"0 1px 2px rgba(22,32,43,.06)", labtrack:".07em"}},
+
+  {id:"sunset", name:"Sunset", at:[1,-.3,-.6,.6,.4], t:{
+    bg:"#FFF3E9", surface:"#FFFFFF", fg:"#3A211A", muted:"#96705F", accent:"#E8622C", accentFg:"#FFFFFF", line:"#F6DCCB",
+    font:NUN, display:NUN, num:NUN, lab:NUN, radius:"13px", pad:"1.6rem", hw:"800", bw:"700",
+    shadow:"0 10px 24px -14px rgba(232,98,44,.55)", labtrack:".12em"}},
+
+  {id:"blueprint", name:"Blueprint", at:[-1,.7,.9,-.2,-.5], t:{
+    bg:"#0E2038", surface:"#12294A", fg:"#D5E6FA", muted:"#6E90B8", accent:"#7FD4FF", accentFg:"#06172B", line:"#21406A",
+    font:MONO, display:MONO, num:MONO, lab:MONO, pad:"1.1rem", gap:".6rem", lh:"1.5", labtrack:".2em"}},
+
+  {id:"velvet", name:"Velvet", at:[.7,-.7,.3,.4,-.6], t:{
+    bg:"#14100C", surface:"#1D1712", fg:"#F0E6D6", muted:"#A08F76", accent:"#C9A227", accentFg:"#14100C", line:"#33291E",
+    font:FRAU, display:INSTR, num:INSTR, lab:FRAU, radius:"2px", pad:"1.9rem", gap:"1.05rem", lh:"1.65", hw:"400", labtrack:".24em"}}
+];
+
+function cssFor(style){
+  var t = {}, k;
+  for(k in BASE) t[k]=BASE[k];
+  for(k in style.t) t[k]=style.t[k];
+  return [
+    "--s-bg:"+t.bg, "--s-surface:"+t.surface, "--s-fg:"+t.fg, "--s-muted:"+t.muted,
+    "--s-accent:"+t.accent, "--s-accent-fg:"+t.accentFg, "--s-line:"+t.line,
+    "--s-font:"+t.font, "--s-display:"+t.display, "--s-numfont:"+t.num, "--s-lab:"+t.lab,
+    "--s-radius:"+t.radius, "--s-border:"+t.border, "--s-shadow:"+t.shadow,
+    "--s-pad:"+t.pad, "--s-gap:"+t.gap, "--s-lh:"+t.lh, "--s-track:"+t.track,
+    "--s-htrack:"+t.htrack, "--s-hw:"+t.hw, "--s-bw:"+t.bw,
+    "--s-labtrack:"+t.labtrack, "--s-btntrack:"+t.btntrack, "--s-caps:"+t.caps, "--s-labw:"+t.labw,
+    "--s-btn-line:"+t.btnLine, "--s-btncaps:"+t.btnCaps
+  ].join(";");
+}
+function coord(style,i){ return style.at[i]; }
+
+/* ═══════════════════════════════════════════════════════
+   3. THE COMPONENTS
+   One markup per component. Twelve looks each, from tokens.
+   ═══════════════════════════════════════════════════════ */
+var COMPONENTS = [
+  {id:"ledger", name:"A ledger", html:
+    '<p class="sp-lab">March activity</p>'+
+    '<div>'+
+      '<div class="sp-row"><span class="sp-row__t"><b>Kaffe Landskrona</b><span class="sp-lab" style="text-transform:none;letter-spacing:0">Tue 14:20 &middot; card &bull;&bull;41</span></span><span class="sp-num">&minus;4.80</span></div>'+
+      '<div class="sp-row"><span class="sp-row__t"><b>Rent, April</b><span class="sp-lab" style="text-transform:none;letter-spacing:0">Mon 09:00 &middot; standing order</span></span><span class="sp-num">&minus;1,140.00</span></div>'+
+      '<div class="sp-row"><span class="sp-row__t"><b>Invoice 0114 paid</b><span class="sp-lab" style="text-transform:none;letter-spacing:0">Fri 17:32 &middot; transfer</span></span><span class="sp-num">2,600.00</span></div>'+
+    '</div>'+
+    '<div class="sp-spacer"></div>'+
+    '<div class="sp-btns"><button class="sp-btn" type="button" tabindex="-1">Export month</button></div>'},
+
+  {id:"persuade", name:"A prompt", html:
+    '<p class="sp-lab">Before you publish</p>'+
+    '<h3 class="sp-h">Three people are still editing this page.</h3>'+
+    '<p class="sp-p">Publishing now takes the version you are looking at. Anything they save after this becomes a draft again, and you will be the one who has to tell them.</p>'+
+    '<div class="sp-spacer"></div>'+
+    '<div class="sp-btns"><button class="sp-btn" type="button" tabindex="-1">Publish anyway</button><button class="sp-btn sp-btn--2" type="button" tabindex="-1">Wait for them</button></div>'},
+
+  {id:"empty", name:"An empty state", html:
+    '<div class="sp-spacer"></div>'+
+    '<div class="sp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/></svg></div>'+
+    '<h3 class="sp-h">Nothing filed yet.</h3>'+
+    '<p class="sp-p">This is where your saved reports will sit. Make one and it lands here, newest first, and stays until you archive it.</p>'+
+    '<div class="sp-btns" style="margin-top:.35rem"><button class="sp-btn" type="button" tabindex="-1">Make the first one</button></div>'+
+    '<div class="sp-spacer"></div>'},
+
+  {id:"figure", name:"A figure", html:
+    '<p class="sp-lab">Answered within an hour</p>'+
+    '<div class="sp-stat">86.4%</div>'+
+    '<span class="sp-delta">&uarr; 4.1 points since February</span>'+
+    '<hr class="sp-rule">'+
+    '<p class="sp-p">Measured across 1,204 conversations. Excludes anything reopened by the same person inside a day.</p>'+
+    '<div class="sp-spacer"></div>'+
+    '<div class="sp-btns"><button class="sp-btn sp-btn--2" type="button" tabindex="-1">See the method</button></div>'},
+
+  {id:"form", name:"A form", html:
+    '<h3 class="sp-h">Name this workspace</h3>'+
+    '<div class="sp-field"><span class="sp-lab">Workspace name</span><input class="sp-input" type="text" value="Northlight Studio" tabindex="-1" readonly></div>'+
+    '<div class="sp-field"><span class="sp-lab">Web address</span><input class="sp-input" type="text" value="northlight.works" tabindex="-1" readonly></div>'+
+    '<p class="sp-p">You can change the name later. The address is permanent, so pick one you can live with.</p>'+
+    '<div class="sp-spacer"></div>'+
+    '<div class="sp-btns"><button class="sp-btn" type="button" tabindex="-1">Create workspace</button></div>'},
+
+  {id:"notice", name:"A card", html:
+    '<div class="sp-card">'+
+      '<span class="sp-lab">Shipping Thursday</span>'+
+      '<h3 class="sp-h">Version history, finally</h3>'+
+      '<p class="sp-p">Every save is now a version you can name, compare and restore. Nothing you have written since January was lost; it was all being kept, just not shown.</p>'+
+      '<div class="sp-btns" style="margin-top:.2rem"><button class="sp-btn" type="button" tabindex="-1">Read the notes</button></div>'+
+    '</div>'+
+    '<div class="sp-spacer"></div>'+
+    '<p class="sp-lab">Posted by the product team &middot; 6 min read</p>'}
+];
+
+function specimen(style, comp, small){
+  return '<div class="sp'+(small?" sp--sm":"")+(style.at[4] > .35 ? " sp--kinetic":"")+'" style="'+cssFor(style)+'">'+comp.html+'</div>';
+}
+
+/* ═══════════════════════════════════════════════════════
+   4. ROUND CONSTRUCTION
+   Each round isolates one axis: the pair differs hard on
+   the target and as little as possible everywhere else.
+   ═══════════════════════════════════════════════════════ */
+var ROUNDS = 20;
+
+function buildRounds(){
+  var rounds = [], used = {}, r, ai, comps = [], i, j;
+  for(i=0;i<ROUNDS;i++) comps.push(COMPONENTS[i % COMPONENTS.length]);
+  for(i=comps.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); var s=comps[i]; comps[i]=comps[j]; comps[j]=s; }
+
+  for(r=0;r<ROUNDS;r++){
+    ai = r % AXES.length;
+    var cands = [];
+    for(i=0;i<STYLES.length;i++) for(j=i+1;j<STYLES.length;j++){
+      var key = i+"-"+j;
+      if(used[key]) continue;
+      var on = Math.abs(STYLES[i].at[ai]-STYLES[j].at[ai]);
+      if(on < .95) continue;
+      var off = 0, a;
+      for(a=0;a<AXES.length;a++) if(a!==ai) off += Math.abs(STYLES[i].at[a]-STYLES[j].at[a]);
+      cands.push({i:i,j:j,key:key,score:off - on});
+    }
+    if(!cands.length){ used = {}; r--; continue; }
+    cands.sort(function(x,y){ return x.score - y.score; });
+    var pick = cands[Math.floor(Math.random()*Math.min(6,cands.length))];
+    used[pick.key] = true;
+    var flip = Math.random() < .5;
+    rounds.push({
+      axis:ai,
+      comp:comps[r],
+      pair:[ STYLES[flip?pick.j:pick.i], STYLES[flip?pick.i:pick.j] ]
+    });
+  }
+  return rounds;
+}
+
+/* ═══════════════════════════════════════════════════════
+   5. STATE
+   ═══════════════════════════════════════════════════════ */
+var $ = function(id){ return document.getElementById(id); };
+var state = null;
+
+function newRun(){
+  state = { rounds:buildRounds(), at:0, sum:[0,0,0,0,0], weight:[0,0,0,0,0], picks:{}, drops:{}, judged:0, log:[] };
+}
+
+function screen(name){
+  var ids = ["intro","test","result","gallery"], i;
+  for(i=0;i<ids.length;i++) $("screen-"+ids[i]).classList.toggle("is-on", ids[i]===name);
+  $("nav-restart").hidden = (name==="intro");
+  window.scrollTo(0,0);
+}
+
+/* ── running the test ── */
+function drawTicks(){
+  var out = "", i;
+  for(i=0;i<ROUNDS;i++){
+    out += '<span class="tick'+(i<state.at?" is-done":(i===state.at?" is-now":""))+'"></span>';
+  }
+  $("ticks").innerHTML = out;
+}
+function drawRound(){
+  var r = state.rounds[state.at], slots = document.querySelectorAll(".sp-slot"), i;
+  for(i=0;i<2;i++) slots[i].innerHTML = specimen(r.pair[i], r.comp, false);
+  $("prompt").textContent = PROMPTS[state.at % PROMPTS.length];
+  $("round-label").textContent = "Round "+(state.at+1)+" of "+ROUNDS;
+  drawTicks();
+}
+var PROMPTS = [
+  "Which of these would you ship?",
+  "Which one do you trust more?",
+  "Which would you defend in a review?",
+  "Which one is doing its job better?",
+  "Which would you rather maintain?"
+];
+
+function choose(side){
+  var r = state.rounds[state.at];
+  if(side !== null){
+    var chosen = r.pair[side], other = r.pair[1-side], a;
+    for(a=0;a<AXES.length;a++){
+      var d = chosen.at[a] - other.at[a];
+      state.sum[a] += d;
+      state.weight[a] += Math.abs(d);
+    }
+    state.picks[chosen.id] = (state.picks[chosen.id]||0)+1;
+    state.drops[other.id] = (state.drops[other.id]||0)+1;
+    state.judged++;
+    state.log.push({axis:r.axis, dir:(chosen.at[r.axis]-other.at[r.axis]) > 0 ? 1 : -1});
+  }
+  advance();
+}
+function advance(){
+  var plates = $("plates");
+  plates.classList.add("is-leaving");
+  window.setTimeout(function(){
+    state.at++;
+    if(state.at >= ROUNDS){ plates.classList.remove("is-leaving"); finish(); return; }
+    drawRound();
+    plates.classList.remove("is-leaving");
+  }, 170);
+}
+
+/* ═══════════════════════════════════════════════════════
+   6. THE READING
+   ═══════════════════════════════════════════════════════ */
+function profileOf(sum, weight){
+  var p = [], a;
+  for(a=0;a<AXES.length;a++) p.push(weight[a] > 0 ? clamp(sum[a]/weight[a]) : 0);
+  return p;
+}
+function clamp(v){ return Math.max(-1, Math.min(1, v)); }
+function poleAt(i, v){ return v < 0 ? AXES[i].lo : AXES[i].hi; }
+
+function ranked(profile){
+  var order = [0,1,2,3,4];
+  order.sort(function(a,b){ return Math.abs(profile[b]) - Math.abs(profile[a]); });
+  return order;
+}
+
+function archetype(profile){
+  var order = ranked(profile);
+  if(Math.abs(profile[order[0]]) < .18) return "The Omnivore";
+  var noun = POLES[poleAt(order[0], profile[order[0]])].noun;
+  if(Math.abs(profile[order[1]]) < .18) return noun;
+  var adj = POLES[poleAt(order[1], profile[order[1]])].adj;
+  return "The " + adj + " " + noun.slice(4);
+}
+
+function convictionOf(profile){
+  if(!state || !state.log.length) return 0;
+  var agree = 0, i;
+  for(i=0;i<state.log.length;i++){
+    var e = state.log[i], p = profile[e.axis];
+    if(Math.abs(p) < .05) { agree += .5; continue; }
+    if((p > 0 ? 1 : -1) === e.dir) agree++;
+  }
+  return Math.round(agree / state.log.length * 100);
+}
+
+function glossFor(profile, conviction){
+  var order = ranked(profile);
+  if(Math.abs(profile[order[0]]) < .18){
+    return "You split almost evenly on every axis, which usually means you were judging execution rather than style — you picked the one that was done better, whatever it looked like. That is a real finding, and a harder brief to write for.";
+  }
+  var top = POLES[poleAt(order[0], profile[order[0]])];
+  var tail = conviction >= 85
+    ? "You barely wavered: " + conviction + "% of your choices pointed the same way."
+    : conviction >= 68
+      ? "You were consistent about it without being rigid — " + conviction + "% of your choices agreed."
+      : "You argued with yourself along the way; only " + conviction + "% of your choices agreed, so hold this lightly.";
+  return top.line + " " + tail;
+}
+
+function drawMeters(profile){
+  var out = "", a;
+  for(a=0;a<AXES.length;a++){
+    var v = profile[a], pct = Math.abs(v)*50, left = v<0 ? (50-pct) : 50, won = Math.abs(v) >= .18;
+    out += '<div class="meter">'+
+      '<div class="meter__labs">'+
+        '<span class="'+(won && v<0 ?"is-won":"")+'">'+AXES[a].lo+'</span>'+
+        '<span style="letter-spacing:.06em;text-transform:none;font-style:italic">'+AXES[a].name+'</span>'+
+        '<span class="'+(won && v>0 ?"is-won":"")+'">'+AXES[a].hi+'</span>'+
+      '</div>'+
+      '<div class="meter__track"><span class="meter__center"></span>'+
+        '<span class="meter__fill" data-left="'+left+'" data-w="'+pct+'"></span>'+
+      '</div>'+
+    '</div>';
+  }
+  $("meters").innerHTML = out;
+  var fills = $("meters").querySelectorAll(".meter__fill");
+  window.setTimeout(function(){
+    for(var i=0;i<fills.length;i++){
+      fills[i].style.left = fills[i].getAttribute("data-left")+"%";
+      fills[i].style.width = fills[i].getAttribute("data-w")+"%";
+    }
+  }, 120);
+}
+
+function drawTopStyles(){
+  var ids = Object.keys(state.picks);
+  ids.sort(function(a,b){ return state.picks[b]-state.picks[a]; });
+  var out = "", i;
+  for(i=0;i<Math.min(3, ids.length);i++){
+    var st = styleById(ids[i]), n = state.picks[ids[i]];
+    out += '<figure class="chip"><div class="chip__body">'+specimen(st, COMPONENTS[3], true)+'</div>'+
+      '<figcaption class="chip__foot"><span>'+st.name+'</span><span class="chip__n">'+n+'&times; kept</span></figcaption></figure>';
+  }
+  $("r-top").innerHTML = out;
+}
+function styleById(id){ for(var i=0;i<STYLES.length;i++) if(STYLES[i].id===id) return STYLES[i]; return STYLES[0]; }
+
+/* ── the mood file ── */
+function moodFile(profile, project, judged){
+  var order = ranked(profile), lines = [], quals = [], refs = [], antis = [], i;
+  var decided = [], openAxes = [];
+  for(i=0;i<order.length;i++){
+    if(Math.abs(profile[order[i]]) >= .18) decided.push(order[i]);
+    else openAxes.push(order[i]);
+  }
+
+  /* Qualities come from the axes the test actually settled. */
+  for(i=0;i<Math.min(3,decided.length);i++){
+    var a = decided[i], pole = POLES[poleAt(a, profile[a])];
+    quals.push("- **"+pole.quality+"** — "+pole.qtext);
+    refs.push("- "+pole.ref);
+    antis.push("- "+pole.anti);
+    lines.push(pole.line);
+  }
+
+  /* Open axes are named once, as open. They are never cited as intent. */
+  var openNames = openAxes.map(function(a){ return AXES[a].name.toLowerCase(); });
+  var openList = openNames.length > 1
+    ? openNames.slice(0,-1).join(", ") + " and " + openNames[openNames.length-1]
+    : openNames[0];
+  if(openAxes.length && quals.length < 3){
+    quals.push("- **Still open: "+openList+"** — you split evenly here, so this is undecided rather than balanced. "+
+      "Decide it against the real product and record it in decisions.md when you do.");
+  }
+  if(openAxes.length && lines.length){
+    lines.push("Where it sits on "+openList+" is still open; the test found no lean either way.");
+  }
+
+  if(!decided.length){
+    lines = ["Nothing settled. The test found no lean on any axis, which usually means the choosing was about execution rather than style."];
+    refs = ["- None strong enough to name yet. Take them from the work instead."];
+    antis = ["- NOT settled: nothing was rejected consistently enough to write down."];
+  }
+
+  var today = new Date().toISOString().slice(0,10);
+  return "# Mood — "+project+"\n\n"+
+    "*Produced with The Taste Test on "+today+", from "+judged+" forced choices between unlabelled specimens. "+
+    "This is a record of preference, not of the product: it says what you reach for, not what this project needs. "+
+    "Provisional until it survives a real screen.*\n\n"+
+    "## In three lines\n\n"+ lines.join(" ") +"\n\n"+
+    "## Qualities\n\n"+ quals.join("\n") +"\n\n"+
+    "## References\n\n"+ refs.join("\n") +"\n\n"+
+    "## Anti-references\n\n"+ antis.join("\n") +"\n";
+}
+
+var shown = { profile:[0,0,0,0,0], conviction:0, judged:0 };
+
+function renderResult(profile, conviction, judged, withStyles){
+  shown = { profile:profile, conviction:conviction, judged:judged };
+  var order = ranked(profile);
+
+  $("r-name").textContent = archetype(profile);
+  $("r-gloss").textContent = glossFor(profile, conviction);
+  $("r-conviction").textContent = conviction + "%";
+  $("r-rounds").textContent = judged + " / " + ROUNDS;
+  $("r-strongest").textContent = Math.abs(profile[order[0]]) < .18
+    ? "none — you stayed centred"
+    : poleAt(order[0], profile[order[0]]) + " (" + AXES[order[0]].name.toLowerCase() + ")";
+
+  drawMeters(profile);
+  if(withStyles){ drawTopStyles(); $("rv-3").style.display=""; } else { $("rv-3").style.display="none"; }
+  refreshFile();
+
+  screen("result");
+  var stages = ["rv-1","rv-2","rv-3","rv-4"], i;
+  for(i=0;i<stages.length;i++) $(stages[i]).classList.remove("is-in");
+  stages.forEach(function(id, n){
+    window.setTimeout(function(){ $(id).classList.add("is-in"); }, 90 + n*220);
+  });
+}
+function refreshFile(){
+  var name = ($("proj").value || "Untitled").trim() || "Untitled";
+  $("moodfile").textContent = moodFile(shown.profile, name, shown.judged);
+}
+function finish(){
+  var profile = profileOf(state.sum, state.weight);
+  var conviction = convictionOf(profile);
+  writeHash(profile, conviction, state.judged);
+  renderResult(profile, conviction, state.judged, true);
+}
+
+/* ── shareable result ── */
+function writeHash(profile, conviction, judged){
+  var vals = profile.map(function(v){ return Math.round(v*100); }).join(".");
+  history.replaceState(null, "", "#r="+vals+"~"+conviction+"~"+judged);
+}
+function readHash(){
+  var m = /#r=([-\d.]+)~(\d+)~(\d+)/.exec(window.location.hash || "");
+  if(!m) return null;
+  var vals = m[1].split(".").map(function(s){ return clamp(parseInt(s,10)/100 || 0); });
+  if(vals.length !== 5) return null;
+  return { profile:vals, conviction:parseInt(m[2],10)||0, judged:parseInt(m[3],10)||0 };
+}
+
+/* ── clipboard ── */
+function copyText(text, button, done){
+  var restore = button.textContent;
+  var ok = function(){ button.textContent = done; window.setTimeout(function(){ button.textContent = restore; }, 1600); };
+  var fail = function(){ button.textContent = "Press ⌘C"; window.setTimeout(function(){ button.textContent = restore; }, 2200); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(ok, function(){ legacy(text) ? ok() : fail(); });
+  } else { legacy(text) ? ok() : fail(); }
+}
+function legacy(text){
+  try{
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly",""); ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    var ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){ return false; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   7. THE GALLERY
+   ═══════════════════════════════════════════════════════ */
+var galleryComp = 0;
+function drawSwitcher(){
+  var out = "", i;
+  for(i=0;i<COMPONENTS.length;i++){
+    out += '<button type="button" data-c="'+i+'" aria-pressed="'+(i===galleryComp)+'">'+COMPONENTS[i].name+'</button>';
+  }
+  $("switcher").innerHTML = out;
+}
+function drawGrid(){
+  var comp = COMPONENTS[galleryComp], out = "", i;
+  for(i=0;i<STYLES.length;i++){
+    var st = STYLES[i];
+    out += '<figure class="card">'+specimen(st, comp, false)+
+      '<figcaption class="card__foot"><span class="card__name">'+st.name+'</span>'+
+      '<span class="card__coords">'+describe(st)+'</span></figcaption></figure>';
+  }
+  $("grid").innerHTML = out;
+}
+function describe(st){
+  var order = [0,1,2,3,4].sort(function(a,b){ return Math.abs(st.at[b])-Math.abs(st.at[a]); });
+  return poleAt(order[0], st.at[order[0]]) + " · " + poleAt(order[1], st.at[order[1]]);
+}
+
+/* ═══════════════════════════════════════════════════════
+   8. WIRING
+   ═══════════════════════════════════════════════════════ */
+function begin(){
+  newRun();
+  history.replaceState(null, "", window.location.pathname + window.location.search);
+  screen("test");
+  drawRound();
+}
+
+$("start").addEventListener("click", begin);
+$("again").addEventListener("click", begin);
+$("nav-restart").addEventListener("click", begin);
+
+function openGallery(){ drawSwitcher(); drawGrid(); screen("gallery"); }
+$("browse").addEventListener("click", openGallery);
+$("nav-gallery").addEventListener("click", openGallery);
+$("see-all").addEventListener("click", openGallery);
+$("switcher").addEventListener("click", function(e){
+  var b = e.target.closest("button[data-c]");
+  if(!b) return;
+  galleryComp = parseInt(b.getAttribute("data-c"), 10);
+  drawSwitcher(); drawGrid();
+});
+
+$("plates").addEventListener("click", function(e){
+  var p = e.target.closest(".plate");
+  if(!p || $("plates").classList.contains("is-leaving")) return;
+  choose(parseInt(p.getAttribute("data-side"), 10));
+});
+$("skip").addEventListener("click", function(){
+  if(!$("plates").classList.contains("is-leaving")) choose(null);
+});
+document.addEventListener("keydown", function(e){
+  if(!$("screen-test").classList.contains("is-on")) return;
+  if($("plates").classList.contains("is-leaving")) return;
+  if(e.key === "ArrowLeft"){ e.preventDefault(); choose(0); }
+  else if(e.key === "ArrowRight"){ e.preventDefault(); choose(1); }
+  else if(e.key === "ArrowDown"){ e.preventDefault(); choose(null); }
+});
+
+$("proj").addEventListener("input", refreshFile);
+$("copy").addEventListener("click", function(){
+  copyText($("moodfile").textContent, this, "Copied — save as mood.md");
+});
+$("share").addEventListener("click", function(){
+  writeHash(shown.profile, shown.conviction, shown.judged);
+  copyText(window.location.href, this, "Link copied");
+});
+
+/* ── the hero specimen, cycling ── */
+(function heroCycle(){
+  var stage = $("demo-stage"), order = [6,1,9,0,5,4,11,3], k = 0;
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function paint(){
+    var st = STYLES[order[k % order.length]];
+    stage.innerHTML = specimen(st, COMPONENTS[1], false);
+    $("demo-name").textContent = st.name;
+    $("demo-n").textContent = ("0" + ((k % order.length) + 1)).slice(-2);
+    k++;
+  }
+  paint();
+  if(!reduced) window.setInterval(paint, 3200);
+})();
+
+/* ── arriving on someone else's result ── */
+(function boot(){
+  var shared = readHash();
+  if(shared){
+    renderResult(shared.profile, shared.conviction, shared.judged, false);
+    $("nav-restart").hidden = false;
+  }
+})();
+
+})();
+</script>
